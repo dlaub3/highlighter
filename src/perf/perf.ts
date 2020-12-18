@@ -1,11 +1,8 @@
-import Highlighter from "../highlighter";
-import theme from "../highlighter/themes";
-import { dracula } from "../highlighter/colorSchemes";
+import { Highlighter, themes, schemes } from "../highlighter";
 
 const highlighter = new Highlighter({
-  customStyles: "font-size: 1.5em;",
-  scheme: dracula,
-  theme: theme
+  theme: themes.dracula,
+  scheme: schemes.dracula
 });
 
 export function time(args: { fn: () => void; executions: number }) {

@@ -1,4 +1,6 @@
-import { count, time } from "../perf/perf";
+import { count, time } from "../perf";
 
-time({ fn: () => {}, executions: 10000 });
-count({ fn: () => {}, milliseconds: 1 });
+export const testPerf = () => {
+  time({ fn: () => {}, executions: 10000 });
+  count({ fn: () => {}, milliseconds: 1 });
+};

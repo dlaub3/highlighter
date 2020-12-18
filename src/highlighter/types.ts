@@ -6,3 +6,5 @@ export type Scheme = {
   background: string;
   [k: string]: string;
 };
+
+export type Emojis = { [k in LogLevel]: string };
