@@ -1,8 +1,11 @@
-import { Highlighter, themes, schemes } from "../highlighter";
+import { Highlighter } from "../highlighter";
 
-const highlighter = new Highlighter({
-  theme: themes.dracula,
-  scheme: schemes.dracula
+const dracula = new Highlighter({
+  name: "dracula",
+});
+
+const molokai = new Highlighter({
+  name: "molokai",
 });
 
 export function time(args: { fn: () => void; executions: number }) {
@@ -15,7 +18,12 @@ export function time(args: { fn: () => void; executions: number }) {
   const end = performance.now();
 
   // eslint-disable-next-line
-  highlighter.highlight.purple`${fn.name} took ${
+  dracula.highlight.purple`${fn.name} took ${
+    end - start
+  }ms to execute ${executions} times.`;
+
+  // eslint-disable-next-line
+  molokai.highlight.lightOrange`${fn.name} took ${
     end - start
   }ms to execute ${executions} times.`;
 }
@@ -31,6 +39,6 @@ export function count(args: { fn: () => void; milliseconds: number }) {
   }
 
   // eslint-disable-next-line
-  highlighter.highlight
-    .pink`${fn.name} executed ${count}times in ${milliseconds}ms`;
+  dracula.highlight
+    .cyan`${fn.name} executed ${count}times in ${milliseconds}ms`;
 }

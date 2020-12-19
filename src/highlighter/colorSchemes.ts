@@ -9,5 +9,18 @@ export const dracula = {
   pink: "#ff79c6",
   purple: "#bd93f9",
   red: "#ff5555",
-  yellow: "#f1fa8c"
+  yellow: "#f1fa8c",
+};
+
+export const molokai = {
+  background: "#272822",
+  foreground: "#F8F8F2",
+  comment: "#75715E",
+  red: "#F92672",
+  orange: "#FD971F",
+  lightOrange: "#E69F66",
+  yellow: "#E6DB74",
+  green: "#A6E22E",
+  blue: "#66D9EF",
+  purple: "#AE81FF",
 };

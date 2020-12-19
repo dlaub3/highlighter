@@ -1,36 +1,78 @@
-import { dracula } from "./themes";
-import { standard } from "./emoji";
+import * as themes from "./themes";
 import * as schemes from "./colorSchemes";
+import * as emojis from "./emoji";
 import { transform, mergeXY } from "./stringHelpers";
 import { isEmptyString } from "../utils/guards";
-import { LogLevel, Theme, Scheme, Emojis } from "./types";
+import { LogLevel, Theme, SchemeName, Scheme, Emojis } from "./types";
 
 const { log } = console;
 
-type Constructor = { theme?: Theme; scheme: Scheme; customStyles?: string };
+type CustomScheme = { [k: string]: string } & { background: string };
 
-export class Highlighter<T extends Constructor> {
-  theme: Theme = dracula;
-  emojis: Emojis = standard;
-  customStyles: string = "";
-  scheme: T["scheme"] = schemes.dracula;
+type CustomConfig<T extends CustomScheme> = {
+  name: "custom";
+  theme: Theme;
+  scheme: T;
+  styles?: string;
+  emojis?: Emojis;
+};
 
-  constructor(config: T) {
-    Object.assign(this, config);
+type NamedConfig<T extends SchemeName> = {
+  name: T;
+  styles?: string;
+  emojis?: Emojis;
+};
+
+type Config<T extends SchemeName | CustomScheme> = T extends SchemeName
+  ? Required<NamedConfig<T>> & { theme: Theme; scheme: Scheme<T> }
+  : T extends CustomScheme
+  ? Required<CustomConfig<T>>
+  : never;
+
+const isCustomConfig = (
+  config: NamedConfig<SchemeName> | CustomConfig<CustomScheme>,
+): config is Config<CustomScheme> =>
+  typeof config === "object" && "name" in config && config.name === "custom";
+
+const isNamedConfig = (
+  config: NamedConfig<SchemeName> | CustomConfig<CustomScheme>,
+): config is NamedConfig<SchemeName> =>
+  typeof config === "object" && "name" in config && config.name !== "custom";
+
+export class Highlighter<T extends SchemeName | CustomScheme> {
+  private theme: Config<T>["theme"];
+  private emojis: Config<T>["emojis"];
+  private styles: Config<T>["styles"];
+  private scheme: Config<T>["scheme"];
+
+  constructor(config: T extends SchemeName ? NamedConfig<T> : Config<T>) {
+    if (isNamedConfig(config)) {
+      this.theme = themes[config.name];
+      this.scheme = schemes[config.name];
+      this.emojis = emojis[config.name];
+      this.styles = config.styles || "";
+    } else if (isCustomConfig(config)) {
+      this.theme = config.theme;
+      this.scheme = config.scheme;
+      this.styles = config.styles || "";
+      this.emojis = config.emojis || emojis.standard;
+    } else {
+      throw `Invaid Config: ${config}`;
+    }
   }
 
   private getLoggerCss = (level: LogLevel) => ({
-    val: `background: ${this.theme[level].dark}; color: ${this.theme[level].light}; font-size: 1.5em; ${this.customStyles}`,
-    str: `background: ${this.theme[level].light}; color: ${this.theme[level].dark}; font-size: 1.5em; ${this.customStyles}`
+    val: `background: ${this.theme[level].dark}; color: ${this.theme[level].light}; font-size: 1.5em; ${this.styles}`,
+    str: `background: ${this.theme[level].light}; color: ${this.theme[level].dark}; font-size: 1.5em; ${this.styles}`,
   });
 
-  private getHighlightCss = (color: keyof T["scheme"]) => ({
-    val: `background: ${this.scheme[color]}; color: ${this.scheme["background"]}; font-size: 1.5em; ${this.customStyles}`,
-    str: `background: ${this.scheme["background"]}; color: ${this.scheme[color]}; font-size: 1.5em; ${this.customStyles}`
+  private getHighlightCss = (color: keyof Config<T>["scheme"]) => ({
+    val: `background: ${this.scheme[color]}; color: ${this.scheme["background"]}; font-size: 1.5em; ${this.styles}`,
+    str: `background: ${this.scheme["background"]}; color: ${this.scheme[color]}; font-size: 1.5em; ${this.styles}`,
   });
 
   private getCss = (
-    type: { level: LogLevel } | { color: keyof T["scheme"] }
+    type: { level: LogLevel } | { color: keyof Config<T>["scheme"] },
   ) => {
     if ("level" in type) {
       return this.getLoggerCss(type.level);
@@ -40,7 +82,7 @@ export class Highlighter<T extends Constructor> {
   };
 
   private logger = (
-    type: { level: LogLevel } | { color: keyof T["scheme"] }
+    type: { level: LogLevel } | { color: keyof Config<T>["scheme"] },
   ) => {
     const css = this.getCss(type);
     const emoji = "level" in type ? this.emojis[type.level] : this.emojis.log;
@@ -62,17 +104,31 @@ export class Highlighter<T extends Constructor> {
         });
 
         return log(...["%c %s" + mergeXY(xs, xy), ...colors]);
-      }
+      },
     });
   };
 
-  public error = this.logger({ level: "error" });
-  public warn = this.logger({ level: "warn" });
-  public info = this.logger({ level: "info" });
-  public log = this.logger({ level: "log" });
-  public get highlight() {
-    return Object.keys(this.scheme).reduce((acc, key) => {
+  private get consoleColors() {
+    return {
+      error: this.logger({ level: "error" }),
+      warn: this.logger({ level: "warn" }),
+      info: this.logger({ level: "info" }),
+      log: this.logger({ level: "log" }),
+    };
+  }
+
+  private get themeColors() {
+    const colors = Object.keys(this.scheme) as [keyof Config<T>["scheme"]];
+
+    return colors.reduce((acc, key) => {
       return { ...acc, [key]: this.logger({ color: key }) };
-    }, {} as { [k in keyof T["scheme"]]: (string: any, ...values: unknown[]) => unknown });
+    }, {} as { [k in keyof Config<T>["scheme"]]: (string: any, ...values: unknown[]) => unknown });
+  }
+
+  public get highlight() {
+    return {
+      ...this.themeColors,
+      ...this.consoleColors,
+    };
   }
 }
