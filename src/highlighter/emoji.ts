@@ -7,6 +7,12 @@ export const standard: Emojis = {
   log: "🔥",
 };
 
+export const unicorn: Emojis = {
+  error: "🌩️",
+  info: "🌈",
+  warn: "🍀",
+  log: "🦄",
+};
 /* TODO add emojis Daniel Laubacher  Fri 18 Dec 2020 **/
 export const dracula: Emojis = standard;
 

@@ -19,3 +19,10 @@ export const molokai: Theme = {
   warn: toDarkLight(schemes.molokai.background, schemes.molokai.yellow),
   log: toDarkLight(schemes.molokai.background, schemes.molokai.blue),
 };
+
+export const unicorn: Theme = {
+  error: toDarkLight(schemes.unicorn.background, schemes.unicorn.pink),
+  info: toDarkLight(schemes.unicorn.background, schemes.unicorn.purple),
+  warn: toDarkLight(schemes.unicorn.background, schemes.unicorn.yellow),
+  log: toDarkLight(schemes.unicorn.background, schemes.unicorn.blue),
+};

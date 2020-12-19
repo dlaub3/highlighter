@@ -24,3 +24,13 @@ export const molokai = {
   blue: "#66D9EF",
   purple: "#AE81FF",
 };
+
+export const unicorn = {
+  background: "#ffffff",
+  purple: "#be84d2",
+  blue: "#98d0dd",
+  yellow: "#f8e25b",
+  pink: "#fe98b9",
+  orange: "#ffc066",
+  gradient: `linear-gradient(90deg, rgba(190,132,210,1) 0%, rgba(152,208,221,1) 22%, rgba(254,152,185,1) 47%, rgba(248,226,91,1) 68%, rgba(255,192,102,1) 86%)`,
+};

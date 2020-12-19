@@ -8,6 +8,10 @@ const molokai = new Highlighter({
   name: "molokai",
 });
 
+const unicorn = new Highlighter({
+  name: "unicorn",
+});
+
 export function time(args: { fn: () => void; executions: number }) {
   const { fn, executions } = args;
   let i = executions;
@@ -41,4 +45,11 @@ export function count(args: { fn: () => void; milliseconds: number }) {
   // eslint-disable-next-line
   dracula.highlight
     .cyan`${fn.name} executed ${count}times in ${milliseconds}ms`;
+
+  // eslint-disable-next-line
+  unicorn.highlight
+    .error`${fn.name} executed ${count}times in ${milliseconds}ms`;
+  // eslint-disable-next-line
+  unicorn.highlight
+    .gradient`${fn.name} executed ${count}times in ${milliseconds}ms`;
 }
