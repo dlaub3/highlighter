@@ -27,6 +27,10 @@ export function time(args: { fn: () => void; executions: number }) {
   }ms to execute ${executions} times.`;
 
   // eslint-disable-next-line
+  molokai.highlight.green`${fn.name} took ${
+    end - start
+  }ms to execute ${executions} times.`;
+
   molokai.highlight.lightOrange`${fn.name} took ${
     end - start
   }ms to execute ${executions} times.`;

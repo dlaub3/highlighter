@@ -103,7 +103,7 @@ export class Highlighter<T extends SchemeName | CustomScheme> {
           }
         });
 
-        return log(...["%c %s" + mergeXY(xs, xy), ...colors]);
+        return log(...["%c %s " + mergeXY(xs, xy) + " ", ...colors]);
       },
     });
   };
