@@ -7,10 +7,7 @@
     "sourceMap": true,
     "allowJs": true,
     "target": "esnext",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "rootDir": "src",
     "moduleResolution": "node"
   }
