@@ -1,9 +1,8 @@
-import * as themes from "./themes";
 import * as schemes from "./colorSchemes";
 import * as emojis from "./emoji";
 import { transform, mergeXY } from "./stringHelpers";
 import { isEmptyString } from "../utils/guards";
-import { LogLevel, Theme, SchemeName, Scheme, Emojis } from "./types";
+import { Theme, SchemeName, Scheme, Emojis } from "./types";
 
 const { log } = console;
 
@@ -40,19 +39,16 @@ const isNamedConfig = (
   typeof config === "object" && "name" in config && config.name !== "custom";
 
 export class Highlighter<T extends SchemeName | CustomScheme> {
-  private theme: Config<T>["theme"];
   private emojis: Config<T>["emojis"];
   private styles: Config<T>["styles"];
   private scheme: Config<T>["scheme"];
 
   constructor(config: T extends SchemeName ? NamedConfig<T> : Config<T>) {
     if (isNamedConfig(config)) {
-      this.theme = themes[config.name];
       this.scheme = schemes[config.name];
       this.emojis = emojis[config.name];
       this.styles = config.styles || "";
     } else if (isCustomConfig(config)) {
-      this.theme = config.theme;
       this.scheme = config.scheme;
       this.styles = config.styles || "";
       this.emojis = config.emojis || emojis.standard;
@@ -61,31 +57,14 @@ export class Highlighter<T extends SchemeName | CustomScheme> {
     }
   }
 
-  private getLoggerCss = (level: LogLevel) => ({
-    val: `background: ${this.theme[level].dark}; color: ${this.theme[level].light}; font-size: 1.5em; ${this.styles}`,
-    str: `background: ${this.theme[level].light}; color: ${this.theme[level].dark}; font-size: 1.5em; ${this.styles}`,
-  });
-
   private getHighlightCss = (color: keyof Config<T>["scheme"]) => ({
     val: `background: ${this.scheme[color]}; color: ${this.scheme["background"]}; font-size: 1.5em; ${this.styles}`,
     str: `background: ${this.scheme["background"]}; color: ${this.scheme[color]}; font-size: 1.5em; ${this.styles}`,
   });
 
-  private getCss = (
-    type: { level: LogLevel } | { color: keyof Config<T>["scheme"] },
-  ) => {
-    if ("level" in type) {
-      return this.getLoggerCss(type.level);
-    } else {
-      return this.getHighlightCss(type.color);
-    }
-  };
-
-  private logger = (
-    type: { level: LogLevel } | { color: keyof Config<T>["scheme"] },
-  ) => {
-    const css = this.getCss(type);
-    const emoji = "level" in type ? this.emojis[type.level] : this.emojis.log;
+  private logger = (type: { color: keyof Config<T>["scheme"] }) => {
+    const css = this.getHighlightCss(type.color);
+    const emoji = this.emojis.log;
 
     return transform({
       val: (v) => `%c ${v} `,
@@ -103,19 +82,10 @@ export class Highlighter<T extends SchemeName | CustomScheme> {
           }
         });
 
-        return log(...["%c %s " + mergeXY(xs, xy) + " ", ...colors]);
+        return log(log(...["%c %s " + mergeXY(xs, xy) + " ", ...colors]));
       },
     });
   };
-
-  private get consoleColors() {
-    return {
-      error: this.logger({ level: "error" }),
-      warn: this.logger({ level: "warn" }),
-      info: this.logger({ level: "info" }),
-      log: this.logger({ level: "log" }),
-    };
-  }
 
   private get themeColors() {
     const colors = Object.keys(this.scheme) as [keyof Config<T>["scheme"]];
@@ -128,7 +98,6 @@ export class Highlighter<T extends SchemeName | CustomScheme> {
   public get highlight() {
     return {
       ...this.themeColors,
-      ...this.consoleColors,
     };
   }
 }
