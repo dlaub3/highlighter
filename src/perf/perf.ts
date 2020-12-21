@@ -2,7 +2,6 @@ import { Highlighter } from "../highlighter";
 
 const dracula = new Highlighter({
   name: "dracula",
-  styles: "border-bottom: 4px solid white; line-height: 1.6em;",
 });
 
 const molokai = new Highlighter({
@@ -11,7 +10,6 @@ const molokai = new Highlighter({
 
 const unicorn = new Highlighter({
   name: "unicorn",
-  styles: "border-left: 4px solid white; line-height: 1.6em;",
 });
 
 export function time(args: { fn: () => void; executions: number }) {
@@ -54,8 +52,8 @@ export function count(args: { fn: () => void; milliseconds: number }) {
 
   // eslint-disable-next-line
   unicorn.highlight
-    .purple`${fn.name} executed ${count}times in ${milliseconds}ms`;
+    .purple` ${fn.name} executed emoji - [ 💩 ]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
   // eslint-disable-next-line
   unicorn.highlight
-    .gradient`${fn.name} executed ${count}times in ${milliseconds}ms`;
+    .gradient` ${fn.name} executed emoji - [ 💩 ]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
 }

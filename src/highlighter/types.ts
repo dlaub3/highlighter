@@ -1,5 +1,7 @@
 import * as schemes from "./colorSchemes";
-import * as themes from "./themes";
+import * as styles from "./styles";
+
+export type CustomScheme = { [k: string]: string } & { background: string };
 
 export type Schemes = typeof schemes;
 
@@ -9,10 +11,20 @@ export type Scheme<Key extends SchemeName> = {
   [Index in SchemeName]: Schemes[Index];
 }[Key] & { background: string };
 
-export type ThemeNames = keyof typeof themes;
+export type Emojis<T extends SchemeName> = {
+  [k in keyof Scheme<T>]: string;
+};
 
-export type Theme = { [k in LogLevel]: { [k in "light" | "dark"]: string } };
+export type Styles = typeof styles;
 
-export type LogLevel = "error" | "warn" | "info" | "log";
+export type Style = {
+  value: <T>(colors: T) => string;
+  string: <T>(colors: T) => string;
+  line: <T>(colors: T) => string;
+  append: <T>(colors: T) => string;
+  prepend: <T>(colors: T) => string;
+};
 
-export type Emojis = { [k in LogLevel]: string };
+export type Styling<Key extends keyof Styles> = {
+  [Index in Key]: Style;
+}[Key];

@@ -1,88 +1,65 @@
 import * as schemes from "./colorSchemes";
 import * as emojis from "./emoji";
+import * as styles from "./styles";
 import { transform, mergeXY } from "./stringHelpers";
-import { isEmptyString } from "../utils/guards";
-import { Theme, SchemeName, Scheme, Emojis } from "./types";
+import { isObject, isEmptyString } from "../utils/guards";
+import { Style, SchemeName, Scheme, Emojis } from "./types";
 
 const { log } = console;
 
-type CustomScheme = { [k: string]: string } & { background: string };
-
-type CustomConfig<T extends CustomScheme> = {
-  name: "custom";
-  theme: Theme;
-  scheme: T;
-  styles?: string;
-  emojis?: Emojis;
-};
-
 type NamedConfig<T extends SchemeName> = {
   name: T;
-  styles?: string;
-  emojis?: Emojis;
+  styles?: Style;
+  emojis?: Emojis<SchemeName>;
 };
 
-type Config<T extends SchemeName | CustomScheme> = T extends SchemeName
-  ? Required<NamedConfig<T>> & { theme: Theme; scheme: Scheme<T> }
-  : T extends CustomScheme
-  ? Required<CustomConfig<T>>
+type Config<T extends SchemeName> = T extends SchemeName
+  ? Required<NamedConfig<T>> & { scheme: Scheme<T> }
   : never;
 
-const isCustomConfig = (
-  config: NamedConfig<SchemeName> | CustomConfig<CustomScheme>,
-): config is Config<CustomScheme> =>
-  typeof config === "object" && "name" in config && config.name === "custom";
-
-const isNamedConfig = (
-  config: NamedConfig<SchemeName> | CustomConfig<CustomScheme>,
-): config is NamedConfig<SchemeName> =>
-  typeof config === "object" && "name" in config && config.name !== "custom";
-
-export class Highlighter<T extends SchemeName | CustomScheme> {
+export class Highlighter<T extends SchemeName> {
   private emojis: Config<T>["emojis"];
-  private styles: Config<T>["styles"];
+  //private styles: Config<T>["styles"];
   private scheme: Config<T>["scheme"];
+  private getStyles: any;
 
-  constructor(config: T extends SchemeName ? NamedConfig<T> : Config<T>) {
-    if (isNamedConfig(config)) {
-      this.scheme = schemes[config.name];
-      this.emojis = emojis[config.name];
-      this.styles = config.styles || "";
-    } else if (isCustomConfig(config)) {
-      this.scheme = config.scheme;
-      this.styles = config.styles || "";
-      this.emojis = config.emojis || emojis.standard;
-    } else {
-      throw `Invaid Config: ${config}`;
-    }
+  constructor(config: T extends SchemeName ? NamedConfig<T> : never) {
+    this.scheme = schemes[config.name];
+    this.emojis = emojis[config.name];
+    //this.styles = config.styles || {};
+    this.getStyles = styles[config.name];
   }
 
-  private getHighlightCss = (color: keyof Config<T>["scheme"]) => ({
-    val: `background: ${this.scheme[color]}; color: ${this.scheme["background"]}; font-size: 1.5em; ${this.styles}`,
-    str: `background: ${this.scheme["background"]}; color: ${this.scheme[color]}; font-size: 1.5em; ${this.styles}`,
-  });
-
   private logger = (type: { color: keyof Config<T>["scheme"] }) => {
-    const css = this.getHighlightCss(type.color);
-    const emoji = this.emojis.log;
+    const css = this.getStyles(type.color);
+    const emoji = this.emojis[type.color as keyof Config<T>["emojis"]];
 
     return transform({
-      val: (v) => `%c ${v} `,
-      str: (s) => `%c${s}`,
+      val: (v) =>
+        isObject(v)
+          ? `%c ${JSON.stringify({ a: { b: { c: [] } } }, null, 2)} `
+          : `%c ${v} `,
+      str: (s) => (isEmptyString(s.trim()) ? `` : `%c ${s.trim()} `),
       merge: (xs, xy) => {
-        const colors: Array<string> = [css.val, emoji];
+        const colors: Array<unknown> = [
+          css.append(this.scheme) +
+            css.value(this.scheme) +
+            css.line(this.scheme),
+          css.value(this.scheme) + css.line(this.scheme),
+          emoji,
+        ];
 
         xs.forEach((s, i) => {
           if (xy[i - 1] !== undefined) {
-            colors.push(css.val);
+            colors.push(css.value(this.scheme) + css.line(this.scheme));
           }
 
           if (!isEmptyString(s)) {
-            colors.push(css.str);
+            colors.push(css.string(this.scheme) + css.line(this.scheme));
           }
         });
 
-        return log(log(...["%c %s " + mergeXY(xs, xy) + " ", ...colors]));
+        return log(...["%c %c %s " + mergeXY(xs, xy), ...colors]);
       },
     });
   };
