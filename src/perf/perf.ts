@@ -52,8 +52,8 @@ export function count(args: { fn: () => void; milliseconds: number }) {
 
   // eslint-disable-next-line
   unicorn.highlight
-    .purple` ${fn.name} executed emoji - [ 💩 ]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
+    .purple` ${fn.name} executed emoji - [:heart: :unicorn:]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
   // eslint-disable-next-line
   unicorn.highlight
-    .gradient` ${fn.name} executed emoji - [ 💩 ]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
+    .gradient` ${fn.name} executed emoji - [:FIRE: :poOp:]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
 }

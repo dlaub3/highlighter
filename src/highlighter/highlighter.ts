@@ -1,6 +1,7 @@
 import * as schemes from "./colorSchemes";
 import * as emojis from "./emoji";
 import * as styles from "./styles";
+import { emojify } from "./emojify";
 import { transform, mergeXY } from "./stringHelpers";
 import { isObject, isEmptyString } from "../utils/guards";
 import { Style, SchemeName, Scheme, Emojis } from "./types";
@@ -10,7 +11,7 @@ const { log } = console;
 type NamedConfig<T extends SchemeName> = {
   name: T;
   styles?: Style;
-  emojis?: Emojis<SchemeName>;
+  emojis?: Emojis<T>;
 };
 
 type Config<T extends SchemeName> = T extends SchemeName
@@ -30,15 +31,13 @@ export class Highlighter<T extends SchemeName> {
     this.getStyles = styles[config.name];
   }
 
-  private logger = (type: { color: keyof Config<T>["scheme"] }) => {
-    const css = this.getStyles(type.color);
-    const emoji = this.emojis[type.color as keyof Config<T>["emojis"]];
+  private logger = (config: { color: keyof Config<T>["scheme"] }) => {
+    const css = this.getStyles(config.color);
+    const emoji = this.emojis[config.color];
 
     return transform({
       val: (v) =>
-        isObject(v)
-          ? `%c ${JSON.stringify({ a: { b: { c: [] } } }, null, 2)} `
-          : `%c ${v} `,
+        isObject(v) ? `%c ${JSON.stringify(v, null, 2)} ` : `%c ${v} `,
       str: (s) => (isEmptyString(s.trim()) ? `` : `%c ${s.trim()} `),
       merge: (xs, xy) => {
         const colors: Array<unknown> = [
@@ -59,7 +58,7 @@ export class Highlighter<T extends SchemeName> {
           }
         });
 
-        return log(...["%c %c %s " + mergeXY(xs, xy), ...colors]);
+        return log(emojify("%c %c %s " + mergeXY(xs, xy)), ...colors);
       },
     });
   };
