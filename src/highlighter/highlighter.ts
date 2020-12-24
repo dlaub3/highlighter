@@ -1,8 +1,7 @@
 import * as schemes from "./colorSchemes";
-import * as emojis from "./emoji";
+import * as emojis from "./emojiScheme";
 import * as styles from "./styles";
-import { emojify } from "./emojify";
-import { transform, mergeXY } from "./stringHelpers";
+import { transform, mergeXY, emojify } from "./stringHelpers";
 import { isObject, isEmptyString } from "../utils/guards";
 import { Style, Color, GetStyles, SchemeName, Scheme } from "./types";
 
@@ -74,7 +73,7 @@ export class Highlighter<T extends SchemeName> {
   };
 
   private get themeColors() {
-    const colors = Object.keys(this.scheme) as [Color<T>];
+    const colors: [Color<T>] = Object.keys(this.scheme);
 
     return colors.reduce((acc, key) => {
       return { ...acc, [key]: this.logger({ color: key }) };

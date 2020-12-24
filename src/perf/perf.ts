@@ -17,7 +17,7 @@ const molokai = new Highlighter({
 const unicorn = new Highlighter({
   theme: "unicorn",
   styles: {
-    prepend: (colors) => `border-left: 4px solid white;`,
+    prepend: (colors) => `border-left: 4px solid ${colors.blue};`,
     line: () => `line-height: 1.5em;`,
   },
 });
