@@ -73,7 +73,7 @@ export class Highlighter<T extends SchemeName> {
   };
 
   private get themeColors() {
-    const colors: [Color<T>] = Object.keys(this.scheme);
+    const colors = Object.keys(this.scheme) as [Color<T>];
 
     return colors.reduce((acc, key) => {
       return { ...acc, [key]: this.logger({ color: key }) };

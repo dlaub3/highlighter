@@ -8,10 +8,7 @@ export type Scheme<Key extends SchemeName> = {
   [Index in SchemeName]: Schemes[Index];
 }[Key] & { background: string };
 
-export type Color<T extends SchemeName> = Exclude<
-  Extract<keyof Scheme<T>, string>,
-  "string"
->;
+export type Color<T extends SchemeName> = Extract<keyof Scheme<T>, string>;
 
 export type Style<T extends SchemeName> = {
   value: (colors: Scheme<T>) => string;
