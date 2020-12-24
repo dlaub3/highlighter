@@ -1,6 +1,6 @@
-import { Emojis } from "./types";
+import { Scheme } from "./types";
 
-export const unicorn: Emojis<"unicorn"> = {
+export const unicorn: Scheme<"unicorn"> = {
   purple: "🌩️",
   pink: "🌈",
   yellow: "🍀",
@@ -10,7 +10,7 @@ export const unicorn: Emojis<"unicorn"> = {
   background: "",
 };
 /* TODO add emojis Daniel Laubacher  Fri 18 Dec 2020 **/
-export const dracula: Emojis<"dracula"> = {
+export const dracula: Scheme<"dracula"> = {
   purple: "🌩️",
   pink: "🌈",
   yellow: "🍀",
@@ -25,7 +25,7 @@ export const dracula: Emojis<"dracula"> = {
 };
 
 /* TODO add emojis Daniel Laubacher  Fri 18 Dec 2020 **/
-export const molokai: Emojis<"molokai"> = {
+export const molokai: Scheme<"molokai"> = {
   red: "🚨",
   orange: "🚧",
   yellow: "✨",

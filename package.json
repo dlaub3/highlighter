@@ -1,6 +1,7 @@
 {
   "name": "vanilla-typescript",
   "version": "1.0.0",
+  "license": "",
   "description": "JavaScript and TypeScript example starter project",
   "main": "index.html",
   "scripts": {

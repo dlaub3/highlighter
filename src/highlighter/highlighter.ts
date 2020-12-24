@@ -4,59 +4,69 @@ import * as styles from "./styles";
 import { emojify } from "./emojify";
 import { transform, mergeXY } from "./stringHelpers";
 import { isObject, isEmptyString } from "../utils/guards";
-import { Style, SchemeName, Scheme, Emojis } from "./types";
+import { Style, Color, GetStyles, SchemeName, Scheme } from "./types";
 
 const { log } = console;
 
-type NamedConfig<T extends SchemeName> = {
-  name: T;
-  styles?: Style;
-  emojis?: Emojis<T>;
+type Config<T extends SchemeName> = {
+  theme: T;
+  styles?: Partial<Style<T>>;
 };
 
-type Config<T extends SchemeName> = T extends SchemeName
-  ? Required<NamedConfig<T>> & { scheme: Scheme<T> }
-  : never;
-
 export class Highlighter<T extends SchemeName> {
-  private emojis: Config<T>["emojis"];
-  //private styles: Config<T>["styles"];
-  private scheme: Config<T>["scheme"];
-  private getStyles: any;
+  private emojis: Record<string, string>;
+  private scheme: Scheme<T>;
+  private styles: Partial<Style<T>>;
+  private getStyles: GetStyles;
 
-  constructor(config: T extends SchemeName ? NamedConfig<T> : never) {
-    this.scheme = schemes[config.name];
-    this.emojis = emojis[config.name];
-    //this.styles = config.styles || {};
-    this.getStyles = styles[config.name];
+  constructor(config: Config<T>) {
+    this.scheme = schemes[config.theme];
+    this.emojis = emojis[config.theme];
+    this.styles = config.styles ?? {};
+    this.getStyles = styles[config.theme];
   }
 
-  private logger = (config: { color: keyof Config<T>["scheme"] }) => {
-    const css = this.getStyles(config.color);
-    const emoji = this.emojis[config.color];
+  private logger = (args: { color: Color<T> }) => {
+    const css = this.getStyles(args.color);
+    const emoji = this.emojis[args.color];
 
     return transform({
       val: (v) =>
         isObject(v) ? `%c ${JSON.stringify(v, null, 2)} ` : `%c ${v} `,
       str: (s) => (isEmptyString(s.trim()) ? `` : `%c ${s.trim()} `),
       merge: (xs, xy) => {
-        const colors: Array<unknown> = [
+        const line =
+          css.line(this.scheme) + (this.styles.line?.(this.scheme) || "");
+        const value =
+          css.value(this.scheme) +
+          (this.styles.value?.(this.scheme) || "") +
+          line;
+        const string =
+          css.string(this.scheme) +
+          (this.styles.string?.(this.scheme) || "") +
+          line;
+        const prepend =
+          css.prepend(this.scheme) +
+          (this.styles.prepend?.(this.scheme) || "") +
+          line;
+        const append =
           css.append(this.scheme) +
-            css.value(this.scheme) +
-            css.line(this.scheme),
-          css.value(this.scheme) + css.line(this.scheme),
-          emoji,
-        ];
+          (this.styles.append?.(this.scheme) || "") +
+          line;
+
+        const colors: Array<string> = [value + prepend, value, emoji];
 
         xs.forEach((s, i) => {
           if (xy[i - 1] !== undefined) {
-            colors.push(css.value(this.scheme) + css.line(this.scheme));
+            colors.push(value);
           }
 
           if (!isEmptyString(s)) {
-            colors.push(css.string(this.scheme) + css.line(this.scheme));
+            colors.push(string);
           }
         });
+
+        colors[colors.length - 1] = colors[colors.length - 1] + append;
 
         return log(emojify("%c %c %s " + mergeXY(xs, xy)), ...colors);
       },
@@ -64,16 +74,14 @@ export class Highlighter<T extends SchemeName> {
   };
 
   private get themeColors() {
-    const colors = Object.keys(this.scheme) as [keyof Config<T>["scheme"]];
+    const colors = Object.keys(this.scheme) as [Color<T>];
 
     return colors.reduce((acc, key) => {
       return { ...acc, [key]: this.logger({ color: key }) };
-    }, {} as { [k in keyof Config<T>["scheme"]]: (string: any, ...values: unknown[]) => unknown });
+    }, {} as { [k in Color<T>]: (string: any, ...values: unknown[]) => unknown });
   }
 
   public get highlight() {
-    return {
-      ...this.themeColors,
-    };
+    return this.themeColors;
   }
 }

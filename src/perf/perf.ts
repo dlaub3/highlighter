@@ -1,18 +1,28 @@
 import { Highlighter } from "../highlighter";
 
 const dracula = new Highlighter({
-  name: "dracula",
+  theme: "dracula",
+  styles: {
+    line: () => "line-height: 1.5em;",
+  },
 });
 
 const molokai = new Highlighter({
-  name: "molokai",
+  theme: "molokai",
+  styles: {
+    line: () => "line-height: 1.5em;",
+  },
 });
 
 const unicorn = new Highlighter({
-  name: "unicorn",
+  theme: "unicorn",
+  styles: {
+    prepend: (colors) => `border-left: 4px solid white;`,
+    line: () => `line-height: 1.5em;`,
+  },
 });
 
-export function time(args: { fn: () => void; executions: number }) {
+export function time(args: { fn: () => void; executions: number }): void {
   const { fn, executions } = args;
   let i = executions;
   const start = performance.now();
@@ -36,7 +46,7 @@ export function time(args: { fn: () => void; executions: number }) {
   }ms to execute ${executions} times.`;
 }
 
-export function count(args: { fn: () => void; milliseconds: number }) {
+export function count(args: { fn: () => void; milliseconds: number }): void {
   const { fn, milliseconds } = args;
   let count = 0;
 
@@ -52,8 +62,8 @@ export function count(args: { fn: () => void; milliseconds: number }) {
 
   // eslint-disable-next-line
   unicorn.highlight
-    .purple` ${fn.name} executed emoji - [:heart: :unicorn:]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
+    .purple`:heart: ${fn.name} executed emoji - [:heart: :unicorn:]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
   // eslint-disable-next-line
   unicorn.highlight
-    .gradient` ${fn.name} executed emoji - [:FIRE: :poOp:]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
+    .gradient`:party: ${fn.name} executed emoji - [:FIRE: :poOp:]- emoji ${count}times in ${milliseconds}ms${milliseconds}`;
 }

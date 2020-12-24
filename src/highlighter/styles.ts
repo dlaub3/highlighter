@@ -1,37 +1,36 @@
-import { Scheme } from "./types";
+import { GetStyles } from "./types";
 
-export const molokai = (color: keyof Scheme<"molokai">) => ({
-  value: (scheme: Scheme<"molokai">) =>
+export const molokai: GetStyles = (color) => ({
+  value: (scheme) =>
     `background: ${scheme[color]}; color: ${scheme["background"]}; font-size: 1.5em;`,
-  string: (scheme: Scheme<"molokai">) =>
+  string: (scheme) =>
     `background: ${scheme["background"]}; color: ${scheme[color]}; font-size: 1.5em;`,
-  line: (scheme: Scheme<"molokai">) =>
-    "line-height: 1.6em; border-bottom: 4px solid white;",
-  append: (scheme: Scheme<"molokai">) => "",
-  prepend: (scheme: Scheme<"molokai">) => "",
+  line: (scheme) => "line-height: 1.6em; border-bottom: 4px solid white;",
+  append: (scheme) => "",
+  prepend: (scheme) => "",
 });
 
-export const dracula = (color: keyof Scheme<"dracula">) => ({
-  value: (scheme: Scheme<"dracula">) =>
+export const dracula: GetStyles = (color) => ({
+  value: (scheme) =>
     `background: ${scheme[color]}; color: ${scheme["background"]}; font-size: 1.5em;`,
-  string: (scheme: Scheme<"dracula">) =>
+  string: (scheme) =>
     `background: ${scheme["background"]}; color: ${scheme[color]}; font-size: 1.5em;`,
-  line: (scheme: Scheme<"dracula">) => "",
-  append: (scheme: Scheme<"dracula">) => "",
-  prepend: (scheme: Scheme<"dracula">) => "",
+  line: (scheme) => "",
+  append: (scheme) => "",
+  prepend: (scheme) => "",
 });
 
-export const unicorn = (color: keyof Scheme<"unicorn">) => ({
-  value: (scheme: Scheme<"unicorn">) =>
+export const unicorn: GetStyles = (color) => ({
+  value: (scheme) =>
     `background: ${scheme[color]}; color: ${scheme["background"]}; font-size: 1.5em;`,
-  string: (scheme: Scheme<"unicorn">) => {
+  string: (scheme) => {
     if (color === "gradient") {
       return `background: ${scheme["background"]}; color: hotpink; font-size: 1.5em;`;
     } else {
       return `background: ${scheme["background"]}; color: ${scheme[color]}; font-size: 1.5em;`;
     }
   },
-  line: (scheme: Scheme<"unicorn">) => "",
-  append: (scheme: Scheme<"unicorn">) => "border-left: 4px solid white;",
-  prepend: (scheme: Scheme<"unicorn">) => "",
+  line: (scheme) => "",
+  append: (scheme) => "border-left: 4px solid white;",
+  prepend: (scheme) => "",
 });
