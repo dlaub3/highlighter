@@ -2,7 +2,7 @@ import * as schemes from "./colorSchemes";
 import * as emojis from "./emojiScheme";
 import * as styles from "./styles";
 import { transform, mergeXY, emojify } from "./stringHelpers";
-import { isObject, isEmptyString } from "../utils/guards";
+import { isObject, isEmptyString } from "../utils/type-guards";
 import {
   Style,
   Color,
@@ -60,7 +60,7 @@ export class Highlighter<T extends SchemeName> {
           (this.styles.append?.(this.scheme) || "") +
           line;
 
-        const colors: Array<string> = [value + prepend, value, emoji];
+        const colors: Array<string> = [...(emoji ? [value, emoji] : [])];
 
         xs.forEach((s, i) => {
           if (xy[i - 1] !== undefined) {
@@ -72,9 +72,13 @@ export class Highlighter<T extends SchemeName> {
           }
         });
 
+        colors[0] = colors[0] + prepend;
         colors[colors.length - 1] = colors[colors.length - 1] + append;
 
-        return log(emojify("%c %c %s " + mergeXY(xs, xy)), ...colors);
+        return log(
+          emojify((emoji ? "%c %s " : "") + mergeXY(xs, xy)),
+          ...colors,
+        );
       },
     });
   };
