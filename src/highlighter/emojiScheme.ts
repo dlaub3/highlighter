@@ -1,39 +1,30 @@
-import { Scheme } from "./types";
+import { EmojiScheme } from "./types";
 
-export const unicorn: Scheme<"unicorn"> = {
+export const unicorn: EmojiScheme<"unicorn"> = {
   purple: "🌩️",
   pink: "🌈",
   yellow: "🍀",
-  blue: "🦄",
-  orange: "🦄",
+  blue: "💘",
+  orange: "🧁",
   gradient: "🦄",
-  background: "",
-};
-/* TODO add emojis Daniel Laubacher  Fri 18 Dec 2020 **/
-export const dracula: Scheme<"dracula"> = {
-  purple: "🌩️",
-  pink: "🌈",
-  yellow: "🍀",
-  cyan: "🦄",
-  red: "",
-  background: "",
-  currentLine: "",
-  foreground: "",
-  comment: "",
-  green: "✨",
-  orange: "🔥",
 };
 
-/* TODO add emojis Daniel Laubacher  Fri 18 Dec 2020 **/
-export const molokai: Scheme<"molokai"> = {
-  red: "🚨",
-  orange: "🚧",
-  yellow: "✨",
-  purple: "🔥",
-  lightOrange: "🌩️",
-  green: "🌈",
-  blue: "🍀",
-  background: "",
-  foreground: "",
-  comment: "",
+export const dracula: EmojiScheme<"dracula"> = {
+  purple: "🦇",
+  pink: "🦇",
+  yellow: "🦇",
+  cyan: "🦇",
+  red: "🦇",
+  comment: "🦇",
+  green: "🦇",
+  orange: "🦇",
+};
+
+export const molokai: EmojiScheme<"molokai"> = {};
+
+export const hamburger: EmojiScheme<"hamburger"> = {
+  tomato: "🍔",
+  lettuce: "🍅",
+  cheese: "🥬",
+  onion: "🍔",
 };

@@ -1,3 +1,3 @@
-import { testPerf } from "./tests/performance";
+import { demo } from "./highlighter/demo";
 
-testPerf();
+demo();

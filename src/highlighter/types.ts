@@ -18,4 +18,8 @@ export type Style<T extends SchemeName> = {
   prepend: (colors: Scheme<T>) => string;
 };
 
-export type GetStyles = <T extends SchemeName>(color: Color<T>) => Style<T>;
+export type EmojiScheme<T extends SchemeName> = Partial<
+  Record<Color<T>, string>
+>;
+
+export type GetStyles<T extends SchemeName> = (color: Color<T>) => Style<T>;

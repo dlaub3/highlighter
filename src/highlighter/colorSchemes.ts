@@ -1,8 +1,6 @@
 export const dracula = {
   background: "#282a36",
-  currentLine: "#44475a",
   foreground: "#f8f8f2",
-  comment: "#6272a4",
   cyan: "#8be9fd",
   green: "#50fa7b",
   orange: "#ffb86c",
@@ -15,7 +13,6 @@ export const dracula = {
 export const molokai = {
   background: "#272822",
   foreground: "#F8F8F2",
-  comment: "#75715E",
   red: "#F92672",
   orange: "#FD971F",
   lightOrange: "#E69F66",
@@ -33,4 +30,12 @@ export const unicorn = {
   pink: "#fe98b9",
   orange: "#ffc066",
   gradient: `linear-gradient(90deg, rgba(190,132,210,1) 0%, rgba(152,208,221,1) 22%, rgba(254,152,185,1) 47%, rgba(248,226,91,1) 68%, rgba(255,192,102,1) 86%)`,
+};
+
+export const hamburger = {
+  background: "#f7a852",
+  tomato: "#e40b06",
+  lettuce: "#a8dc33",
+  cheese: "#f5d918",
+  onion: "#a94979",
 };

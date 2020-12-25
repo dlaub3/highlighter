@@ -3,7 +3,14 @@ import * as emojis from "./emojiScheme";
 import * as styles from "./styles";
 import { transform, mergeXY, emojify } from "./stringHelpers";
 import { isObject, isEmptyString } from "../utils/guards";
-import { Style, Color, GetStyles, SchemeName, Scheme } from "./types";
+import {
+  Style,
+  Color,
+  GetStyles,
+  SchemeName,
+  Scheme,
+  EmojiScheme,
+} from "./types";
 
 const { log } = console;
 
@@ -13,21 +20,21 @@ type Config<T extends SchemeName> = {
 };
 
 export class Highlighter<T extends SchemeName> {
-  private emojis: Record<string, string>;
+  private emojis: EmojiScheme<T>;
   private scheme: Scheme<T>;
   private styles: Partial<Style<T>>;
-  private getStyles: GetStyles;
+  private getStyles: GetStyles<T>;
 
   constructor(config: Config<T>) {
     this.scheme = schemes[config.theme];
-    this.emojis = emojis[config.theme];
+    this.emojis = emojis[config.theme] as EmojiScheme<T>;
     this.styles = config.styles ?? {};
-    this.getStyles = styles[config.theme];
+    this.getStyles = (styles[config.theme] as unknown) as GetStyles<T>;
   }
 
   private logger = (args: { color: Color<T> }) => {
     const css = this.getStyles(args.color);
-    const emoji = this.emojis[args.color];
+    const emoji = this.emojis[args.color] ?? "";
 
     return transform({
       val: (v) =>
@@ -73,11 +80,13 @@ export class Highlighter<T extends SchemeName> {
   };
 
   private get themeColors() {
-    const colors = Object.keys(this.scheme) as [Color<T>];
+    type Colors = Exclude<Color<T>, "background" | "foreground">;
+
+    const colors = (Object.keys(this.scheme) as unknown) as [Colors];
 
     return colors.reduce((acc, key) => {
       return { ...acc, [key]: this.logger({ color: key }) };
-    }, {} as { [k in Color<T>]: (string: any, ...values: unknown[]) => unknown });
+    }, {} as { [k in Colors]: (string: any, ...values: unknown[]) => unknown });
   }
 
   public get highlight() {

@@ -1,16 +1,6 @@
-import { GetStyles } from "./types";
+import { GetStyles, SchemeName } from "./types";
 
-export const molokai: GetStyles = (color) => ({
-  value: (scheme) =>
-    `background: ${scheme[color]}; color: ${scheme["background"]}; font-size: 1.5em;`,
-  string: (scheme) =>
-    `background: ${scheme["background"]}; color: ${scheme[color]}; font-size: 1.5em;`,
-  line: (scheme) => "line-height: 1.6em; border-bottom: 4px solid white;",
-  append: (scheme) => "",
-  prepend: (scheme) => "",
-});
-
-export const dracula: GetStyles = (color) => ({
+export const template: GetStyles<SchemeName> = (color) => ({
   value: (scheme) =>
     `background: ${scheme[color]}; color: ${scheme["background"]}; font-size: 1.5em;`,
   string: (scheme) =>
@@ -20,7 +10,37 @@ export const dracula: GetStyles = (color) => ({
   prepend: (scheme) => "",
 });
 
-export const unicorn: GetStyles = (color) => ({
+export const hamburger: GetStyles<"hamburger"> = (color) => ({
+  value: (scheme) =>
+    `background: ${scheme[color]}; color: ${scheme["background"]}; font-size: 1.5em;`,
+  string: (scheme) =>
+    `background: ${scheme["background"]}; color: ${scheme[color]}; font-size: 1.5em;`,
+  line: (scheme) => "",
+  append: (scheme) => "",
+  prepend: (scheme) => "",
+});
+
+export const molokai: GetStyles<"molokai"> = (color) => ({
+  value: (scheme) =>
+    `background: ${scheme[color]}; color: ${scheme["background"]}; font-size: 1.5em;`,
+  string: (scheme) =>
+    `background: ${scheme["background"]}; color: ${scheme[color]}; font-size: 1.5em;`,
+  line: (scheme) => "line-height: 1.6em; border-bottom: 4px solid white;",
+  append: (scheme) => "",
+  prepend: (scheme) => "",
+});
+
+export const dracula: GetStyles<"dracula"> = (color) => ({
+  value: (scheme) =>
+    `background: ${scheme[color]}; color: ${scheme["background"]}; font-size: 1.5em;`,
+  string: (scheme) =>
+    `background: ${scheme["background"]}; color: ${scheme[color]}; font-size: 1.5em;`,
+  line: (scheme) => "",
+  append: (scheme) => "",
+  prepend: (scheme) => "",
+});
+
+export const unicorn: GetStyles<"unicorn"> = (color) => ({
   value: (scheme) =>
     `background: ${scheme[color]}; color: ${scheme["background"]}; font-size: 1.5em;`,
   string: (scheme) => {
