@@ -85,7 +85,6 @@ export class Highlighter<T extends SchemeName> {
 
   private get themeColors() {
     type Colors = Exclude<Color<T>, "background" | "foreground">;
-
     const colors = (Object.keys(this.scheme) as unknown) as [Colors];
 
     return colors.reduce((acc, key) => {
@@ -93,7 +92,10 @@ export class Highlighter<T extends SchemeName> {
     }, {} as { [k in Colors]: (string: any, ...values: unknown[]) => unknown });
   }
 
-  public get highlight() {
+  public get highlight(): Record<
+    Exclude<Color<T>, "background" | "foreground">,
+    (string: any, ...values: unknown[]) => unknown
+  > {
     return this.themeColors;
   }
 }

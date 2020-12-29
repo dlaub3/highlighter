@@ -15,7 +15,6 @@ export const dracula: EmojiScheme<"dracula"> = {
   yellow: "🦇",
   cyan: "🦇",
   red: "🦇",
-  comment: "🦇",
   green: "🦇",
   orange: "🦇",
 };

@@ -17,3 +17,5 @@ export const demo = (): void => {
     }
   }
 };
+
+demo();

@@ -1,3 +1,2 @@
-import { demo } from "./highlighter/demo";
-
-demo();
+export * from "./highlighter";
+export * from "./perf";
