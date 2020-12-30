@@ -15,7 +15,7 @@ yarn add @catpic/console-highlighter
 ```ts
 const highlighter = new Highlighter({theme: 'dracula'})
 
-dracula.highlight.yellow`failure to download: ${link}`
+highlighter.highlight.yellow`failure to download: ${link}`
 ```
 
 
