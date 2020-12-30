@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "description": "Highlight console log messages with style.",
-  "prepublish": "tsc",
+  "prepublish": "tsc -b",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {

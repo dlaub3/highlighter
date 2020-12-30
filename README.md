@@ -1,6 +1,6 @@
-# highlighter
+# console highlighter
 
-A utility for better console logs. 
+Highlight console log messages with style.
 
 ### features
 - themeable
