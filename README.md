@@ -7,6 +7,11 @@ Highlight console log messages with style.
 - customizable
 - variables used in template strings will be highlighted
 
+### install
+```ts
+yarn add @catpic/console-highlighter
+```
+
 ```ts
 const highlighter = new Highlighter({theme: 'dracula'})
 

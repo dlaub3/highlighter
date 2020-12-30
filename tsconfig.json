@@ -3,7 +3,7 @@
     "strict": true,
     "module": "commonjs",
     "esModuleInterop": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "allowJs": true,
     "target": "es2015",
     "lib": ["esnext", "dom"],
