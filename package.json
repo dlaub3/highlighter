@@ -1,6 +1,6 @@
 {
   "name": "@catpic/console-highlighter",
-  "version": "1.0.2",
+  "version": "0.1.6",
   "license": "MIT",
   "description": "Highlight console log messages with style.",
   "repository": {
