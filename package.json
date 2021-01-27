@@ -1,6 +1,6 @@
 {
   "name": "@catpic/console-highlighter",
-  "version": "0.1.5",
+  "version": "1.0.2",
   "license": "MIT",
   "description": "Highlight console log messages with style.",
   "repository": {
@@ -11,8 +11,8 @@
     "lib": "./lib"
   },
   "prepublish": "tsc -b",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "start": "parcel --out-dir serve index.html",
     "build": "tsc -b"
