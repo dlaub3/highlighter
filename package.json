@@ -1,6 +1,6 @@
 {
   "name": "@catpic/console-highlighter",
-  "version": "0.1.7",
+  "version": "0.0.2",
   "license": "MIT",
   "description": "Highlight console log messages with style.",
   "repository": {
@@ -8,12 +8,12 @@
     "url": "https://github.com/dlaub3/highlighter.git"
   },
   "directories": {
-    "lib": "./lib"
+    "lib": "lib"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "prepublish": "tsc -b",
+    "prepublish": "tsc",
     "start": "parcel --out-dir serve index.html",
     "build": "tsc -b"
   },
