@@ -15,7 +15,8 @@ export const hamburger: GetStyles<"hamburger"> = (color) => ({
     `background: ${scheme[color]}; color: ${scheme["background"]}; font-weight: bold;`,
   string: (scheme) =>
     `background: ${scheme["background"]}; color: ${scheme[color]};`,
-  line: (scheme) => "font-family: Arial, sans-serif; font-size: 1.5em;",
+  line: (scheme) =>
+    "font-family: Arial, sans-serif; font-size: 1.5em; line-height:1.8em;",
   append: (scheme) => "font-size: 1.5em;",
   prepend: (scheme) => "",
 });
@@ -25,8 +26,7 @@ export const molokai: GetStyles<"molokai"> = (color) => ({
     `background: ${scheme[color]}; color: ${scheme["background"]};`,
   string: (scheme) =>
     `background: ${scheme["background"]}; color: ${scheme[color]};`,
-  line: (scheme) =>
-    "font-size: 1.5em; line-height:1.8em; border-bottom: 4px solid white;",
+  line: (scheme) => "font-size: 1.5em; line-height:1.8em;",
   append: (scheme) => "",
   prepend: (scheme) => "",
 });
@@ -36,7 +36,7 @@ export const dracula: GetStyles<"dracula"> = (color) => ({
     `background: ${scheme[color]}; color: ${scheme["background"]};`,
   string: (scheme) =>
     `background: ${scheme["background"]}; color: ${scheme[color]};`,
-  line: (scheme) => "font-size: 1.5em;",
+  line: (scheme) => "font-size: 1.5em; line-height:1.8em;",
   append: (scheme) => "",
   prepend: (scheme) => "",
 });
@@ -51,7 +51,7 @@ export const unicorn: GetStyles<"unicorn"> = (color) => ({
       return `background: ${scheme["background"]}; color: ${scheme[color]};`;
     }
   },
-  line: (scheme) => "font-size: 1.5em;",
+  line: (scheme) => "font-size: 1.5em; line-height:1.8em;",
   append: (scheme) => "border-left: 4px solid white;",
   prepend: (scheme) => "",
 });

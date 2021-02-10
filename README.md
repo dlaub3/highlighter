@@ -1,13 +1,13 @@
-# console highlighter
+# @catpic/console-highlighter
 
 Highlight console log messages with style.
 
-### features
+### Features
 - themeable
 - customizable
-- variables used in template strings will be highlighted
+- automatic highlighting (variables used in template strings will be highlighted)
 
-### install
+### How to
 ```ts
 yarn add @catpic/console-highlighter
 ```
@@ -15,9 +15,40 @@ yarn add @catpic/console-highlighter
 ```ts
 const highlighter = new Highlighter({theme: 'dracula'})
 
-highlighter.highlight.yellow`failure to download: ${link}`
+highlighter.highlight.yellow`:fire: ${count} messages sent.`
+
 ```
 
+Supported Regexp Emojis: 
 
-![Demo](./demo.png)
+```ts
+export const emojis = {
+  poop: "💩",
+  happy: "😀",
+  unicorn: "🦄",
+  rainbow: "🌈",
+  party: "🎉",
+  heart: "❤️",
+  bomb: "💣",
+  bang: "💥",
+  dynamite: "🧨",
+  fire: "🔥",
+};
 
+
+```
+
+![Demo](./img/demo.png)
+
+```ts
+const highlighter = new Highlighter({ 
+  theme: 'unicorn'
+  styles: { line: () => "display: block;" },
+})
+```
+
+![display: block](./img/demo.png)
+
+
+### TODO
+- [ ] Expose combinators for building custom highlighters.
