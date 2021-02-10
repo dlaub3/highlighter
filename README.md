@@ -40,6 +40,9 @@ export const emojis = {
 
 ![Demo](./img/demo.png)
 
+
+Themes may be customized using [supported CSS properties](https://developer.mozilla.org/en-US/docs/Web/API/console#usage). 
+
 ```ts
 const highlighter = new Highlighter({ 
   theme: 'unicorn'
