@@ -9,7 +9,6 @@ export const demo = (): void => {
   for (scheme in schemes) {
     const highligher = new Highlighter({
       theme: scheme,
-      styles: { line: () => "display: block;" },
     }) as any;
     for (const color in highligher.highlight) {
       if (color === "background" || color === "foreground") {
