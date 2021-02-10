@@ -15,11 +15,11 @@ yarn add @catpic/console-highlighter
 ```ts
 const highlighter = new Highlighter({theme: 'dracula'})
 
-highlighter.highlight.yellow`:fire: ${count} messages sent.`
+highlighter.highlight.yellow`${count} messages sent.`
 
 ```
 
-Supported Regexp Emojis: 
+The listed emojis may be used in log message like so: `this message is :fire:`
 
 ```ts
 export const emojis = {
@@ -47,7 +47,7 @@ const highlighter = new Highlighter({
 })
 ```
 
-![display: block](./img/demo.png)
+![display: block](./img/unicorn-block.png)
 
 
 ### TODO
